@@ -13,5 +13,9 @@ namespace ToDoList
         {
             optionsBuilder.UseSqlServer(@"Server = (localdb)\mssqllocaldb; Database = ToDoItems; Trusted_Connection = True;");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
     }
 }
