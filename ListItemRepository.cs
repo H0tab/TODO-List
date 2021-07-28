@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,20 +17,48 @@ namespace ToDoList
 
         public void AddTask(string description)
         {
-            ListItem listItem = new ListItem { Description = description };
-            _context.ListItems.Add(listItem);
-            _context.SaveChanges();
+            if(description != null)
+            {
+                ListItem listItem = new ListItem { Description = description, IsCompleted = false };
+                _context.ListItems.Add(listItem);
+                _context.Entry(listItem).State = EntityState.Added;
+                _context.SaveChanges();
+                return;
+            }
+            Console.WriteLine("Enter description!");
         }
 
-        public List<ListItem> GetTasks()
+        public void GetTasks()
         {
-            return _context.ListItems.ToList();
+            var items = _context.ListItems.ToList();
+            foreach (var item in items)
+            {
+                Console.WriteLine($"({item.Id}) {item.Description} - {item.IsCompleted}");
+            }
         }
 
         public void DeleteTask(int id)
         {
-            _context.ListItems.Remove(new ListItem() { Id = id });
-            _context.SaveChanges();
+            var item = _context.ListItems.FirstOrDefault(x => x.Id == id);
+            if(item != null)
+            {
+                _context.ListItems.Remove(item);
+                _context.SaveChanges();
+                return;
+            }
+            Console.WriteLine("There is no such object!");
+        }
+
+        public void SetCompleted(int id)
+        {
+            var item = _context.ListItems.FirstOrDefault(x => x.Id == id);
+            if(item != null)
+            {
+                item.IsCompleted = true;
+                _context.SaveChanges();
+                return;
+            }
+            Console.WriteLine("There is no such object!");
         }
     }
 }
