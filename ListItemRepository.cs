@@ -17,12 +17,13 @@ namespace ToDoList
 
         public void AddTask(string description)
         {
-            if(description != null)
+            if (description != null)
             {
                 ListItem listItem = new ListItem { Description = description, IsCompleted = false };
                 _context.ListItems.Add(listItem);
                 _context.Entry(listItem).State = EntityState.Added;
                 _context.SaveChanges();
+                Console.Clear();
                 return;
             }
             Console.WriteLine("Enter description!");
@@ -31,31 +32,40 @@ namespace ToDoList
         public void GetTasks()
         {
             var items = _context.ListItems.ToList();
+            int number = 1;
+
             foreach (var item in items)
             {
-                Console.WriteLine($"({item.Id}) {item.Description} - {item.IsCompleted}");
+                item.OrdinalNumber = number++;
+                _context.SaveChanges();
+
+                Console.WriteLine($"({item.OrdinalNumber}) {item.Description} - {item.IsCompleted}");
             }
         }
 
-        public void DeleteTask(int id)
+        public void DeleteTask(int ordinalNumber)
         {
-            var item = _context.ListItems.FirstOrDefault(x => x.Id == id);
-            if(item != null)
+            var item = _context.ListItems.FirstOrDefault(x => x.OrdinalNumber == ordinalNumber);
+            if (item != null)
             {
                 _context.ListItems.Remove(item);
                 _context.SaveChanges();
+                Console.Clear();
                 return;
             }
             Console.WriteLine("There is no such object!");
         }
 
-        public void SetCompleted(int id)
+        public void SetCompleted(int ordinalNumber)
         {
-            var item = _context.ListItems.FirstOrDefault(x => x.Id == id);
-            if(item != null)
+            var item = _context.ListItems.FirstOrDefault(x => x.OrdinalNumber == ordinalNumber);
+            if (item != null)
             {
-                item.IsCompleted = true;
+                item.IsCompleted = item.IsCompleted == true ? false : true;
                 _context.SaveChanges();
+
+                Console.Clear();
+
                 return;
             }
             Console.WriteLine("There is no such object!");

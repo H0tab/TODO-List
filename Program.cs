@@ -16,9 +16,8 @@ namespace ToDoList
             bool isContinue = true;
 
             Console.WriteLine("TODO LIST!");
-            itemManager.GetTasks();
-
             Console.WriteLine("Commands: add, del, complete, exit");
+            itemManager.GetTasks();
 
             while (isContinue)
             {
@@ -31,23 +30,20 @@ namespace ToDoList
                         Console.Write("Enter task description: ");
                         string description = Console.ReadLine();
                         itemManager.AddTask(description);
-                        Console.Clear();
                         itemManager.GetTasks();
                         continue;
 
                     case "del":
-                        Console.Write("Enter task ID to delete: ");
-                        int idToDelete = Convert.ToInt32(Console.ReadLine());
-                        itemManager.DeleteTask(idToDelete);
-                        Console.Clear();
+                        Console.Write("Enter ordinal number of task to delete: ");
+                        int numberToDelete = Convert.ToInt32(Console.ReadLine());
+                        itemManager.DeleteTask(numberToDelete);
                         itemManager.GetTasks();
                         continue;
 
                     case "complete":
-                        Console.Write("Enter task ID to complete:");
-                        int idToComplete = Convert.ToInt32(Console.ReadLine());
-                        itemManager.SetCompleted(idToComplete);
-                        Console.Clear();
+                        Console.Write("Enter ordinal number of task to complete:");
+                        int numberToComplete = Convert.ToInt32(Console.ReadLine());
+                        itemManager.SetCompleted(numberToComplete);
                         itemManager.GetTasks();
                         continue;
 
@@ -61,8 +57,6 @@ namespace ToDoList
                         continue;
                 }
             }
-
-            Console.ReadLine();
         }
     }
 }

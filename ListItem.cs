@@ -7,7 +7,9 @@ namespace ToDoList
     public class ListItem
     {
         public int Id { get; set; }
+        public int OrdinalNumber { get; set; }
         public string Description { get; set; }
         public bool IsCompleted { get; set; }
     }
 }
+
